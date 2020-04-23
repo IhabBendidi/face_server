@@ -1,4 +1,7 @@
 __pycache__
+encodings/**
 !encodings/.placeholder
+temp/**
 !temp/.placeholder
+users/**
 !users/.placeholders
