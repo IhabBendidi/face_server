@@ -1,6 +1,7 @@
 __pycache__
 encodings/**
 !encodings/.placeholder
+!encodings/le.pickle
 temp/**
 !temp/.placeholder
 users/**

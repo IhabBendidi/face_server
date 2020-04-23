@@ -2,3 +2,6 @@ numpy
 dlib
 flask
 werkzeug
+keras
+imutils
+opencv-python

@@ -4,6 +4,7 @@ import pickle
 import datetime
 import cv2
 import dlib
+from keras.models import load_model
 
 
 
@@ -26,6 +27,23 @@ face_encoder = dlib.face_recognition_model_v1(face_recognition_model)
 global default_encodings
 default_encodings = "encodings/encodings.pickle"
 global encoding_data
+
+
+# load our serialized face detector from disk
+print("[INFO] loading face detector...")
+protoPath = os.path.sep.join(["models", "deploy.prototxt"])
+modelPath = os.path.sep.join(["models","res10_300x300_ssd_iter_140000.caffemodel"])
+global net
+net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+
+# load the liveness detector model and label encoder from disk
+print("[INFO] loading liveness detector...")
+global model
+global le
+model = load_model("liveness.model")
+le = pickle.loads(open("le.pickle", "rb").read())
+
+
 
 def load_encodings(encodings=default_encodings):
     # load the known faces and embeddings
