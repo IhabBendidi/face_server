@@ -20,10 +20,20 @@ ALLOWED_EXTENSIONS = {'jpg', 'png', 'mov', 'mp4'}
 app = flask.Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "users"
 app.config['TEMP_FOLDER'] = "temp"
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
-
-
+"""
+def get_liveness(frame):
+	frame = imutils.resize(frame, width=600)
+	(h, w) = frame.shape[:2]
+	blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,(300, 300), (104.0, 177.0, 123.0))
+	net.setInput(blob)
+	detections = net.forward()
+	for i in range(0, detections.shape[2]):
+		confidence = detections[0, 0, i, 2]
+		if confidence > 0.5:
+	pass
+"""
 def detection_method(method):
 	if method == "hog":
 		face_detector = hog_face_detector
@@ -338,4 +348,4 @@ def authentificate():
 	return output,status
 
 
-app.run()
+app.run(host= '0.0.0.0')
