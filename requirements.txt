@@ -7,3 +7,4 @@ keras
 imutils
 opencv-python
 tensorflow
+scikit-learn

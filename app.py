@@ -330,9 +330,7 @@ def authentificate():
 	auth_video.save(os.path.join(app.config['TEMP_FOLDER'], filename))
 	try :
 		response = predict_faces(os.path.join(app.config['TEMP_FOLDER'], filename))
-		print(response)
 		output['score'] = response[0]["precision"]
-		print(response[0]["category"])
 		if username == response[0]["category"]:
 			output['Decision'] = "APPROVED"
 			output['DecisionReason']="AUTHENTIFICATION_SUCCESS"
