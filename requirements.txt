@@ -6,3 +6,4 @@ werkzeug
 keras
 imutils
 opencv-python
+tensorflow

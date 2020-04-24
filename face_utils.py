@@ -40,8 +40,8 @@ net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 print("[INFO] loading liveness detector...")
 global model
 global le
-model = load_model("liveness.model")
-le = pickle.loads(open("le.pickle", "rb").read())
+model = load_model("models/liveness.model")
+le = pickle.loads(open("encodings/le.pickle", "rb").read())
 
 
 
