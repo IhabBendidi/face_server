@@ -338,7 +338,8 @@ def authentificate():
 			output['score'] = - output['score']
 			output['Decision'] = "REJECTED"
 			output['DecisionReason']="BIOMETRIC_MISMATCH"
-	except :
+	except Exception as e:
+		print(str(e))
 		output['score'] = None
 		output['Decision'] = "REJECTED"
 		output['DecisionReason']="ERROR_DETECTED"
