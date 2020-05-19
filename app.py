@@ -293,7 +293,8 @@ def enroll():
 		output['trained'] = "success"
 		output['EnrollStatus'] = "APPROVED"
 		output['DecisionReason']="ENROLLED_AS_USER"
-	except :
+	except Exception as e:
+		print(str(e))
 		output['trained'] = "failed"
 		output['EnrollStatus'] = "REJECTED"
 		output['DecisionReason']="ERROR_DETECTED"
@@ -338,8 +339,8 @@ def authentificate():
 			output['score'] = - output['score']
 			output['Decision'] = "REJECTED"
 			output['DecisionReason']="BIOMETRIC_MISMATCH"
-	except Exception as e:
-		print(str(e))
+	except:
+
 		output['score'] = None
 		output['Decision'] = "REJECTED"
 		output['DecisionReason']="ERROR_DETECTED"
