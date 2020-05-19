@@ -20,7 +20,7 @@ ALLOWED_EXTENSIONS = {'jpg', 'png', 'mov', 'mp4'}
 app = flask.Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "users"
 app.config['TEMP_FOLDER'] = "temp"
-app.config["DEBUG"] = False
+app.config["DEBUG"] = True
 
 """
 def get_liveness(frame):
