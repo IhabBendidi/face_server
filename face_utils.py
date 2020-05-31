@@ -37,11 +37,17 @@ global net
 net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
 # load the liveness detector model and label encoder from disk
+"""
 print("[INFO] loading liveness detector...")
 global model
-global le
+global le_live
 model = load_model("models/liveness.model")
-le = pickle.loads(open("encodings/le.pickle", "rb").read())
+model._make_predict_function()
+le_live = pickle.loads(open("encodings/le.pickle", "rb").read())
+
+"""
+
+
 
 
 
@@ -78,7 +84,9 @@ def update_encodings():
 
 config = Path(default_encodings)
 if config.is_file():
+    print("another")
     encoding_data = load_encodings(default_encodings)
 else :
+    print("second another")
     file = open(default_encodings, "x")
     encoding_data = load_encodings(default_encodings)
