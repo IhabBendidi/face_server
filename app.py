@@ -86,14 +86,15 @@ def get_video_liveness(video_path,quota_bar):
 	while success :
 		count += 1
 		success,frame = vidcap.read()
-		if count == 100 and success:
+		if count >= 100 and success:
 			label = recognize_liveness(frame,quota_bar)
 			print(str(label))
 			total_labels.append(label)
-			tester += 1
-			if label.decode("utf-8") == 'real':
-				real_labels.append(label)
-				returned_frame = frame
+			if label is not None :
+				tester += 1
+				if label.decode("utf-8") == 'real':
+					real_labels.append(label)
+					returned_frame = frame
 			count=0
 
 
@@ -413,11 +414,12 @@ def authentificate():
 
 		# Work on video here
 		(liveliness,frame) = get_video_liveness(os.path.join(app.config['TEMP_FOLDER'], filename),quota_bar)
-		frame = cv2.rotate(frame,cv2.ROTATE_90_COUNTERCLOCKWISE)
+		frame = cv2.rotate(frame,cv2.ROTATE_90_CLOCKWISE)
 		cv2.imwrite(os.path.join(app.config['TEMP_FOLDER'], "temp_frame.jpg"),frame)
 		if liveliness :
 			response = predict_faces(os.path.join(app.config['TEMP_FOLDER'], "temp_frame.jpg"))
 			output['score'] = response[0]["precision"]
+			print(response[0]["category"])
 			if username == response[0]["category"]:
 				output['Decision'] = "APPROVED"
 				output['DecisionReason']="AUTHENTIFICATION_SUCCESS"
@@ -435,6 +437,7 @@ def authentificate():
 		output['Decision'] = "REJECTED"
 		output['DecisionReason']="ERROR_DETECTED"
 	os.remove(os.path.join(app.config['TEMP_FOLDER'], filename))
+	os.remove(os.path.join(app.config['TEMP_FOLDER'], "temp_frame.jpg"))
 	return output,status
 
 
