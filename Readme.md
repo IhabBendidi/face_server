@@ -51,9 +51,14 @@ On failure, it returns a json in the form of the following, with `DecisionReason
 
 
 # Deleting all users in server :
+
+This api is to clean up all user data in the server and reset it free of existing users.
+
 ```
 curl -X POST 'http://127.0.0.1:5000/api/reset'
 ```
+
+Possible responses :
 
 
 ```
