@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = {'jpg', 'png', 'mov', 'mp4'}
 app = flask.Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "users"
 app.config['TEMP_FOLDER'] = "temp"
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 
 
@@ -272,8 +272,16 @@ def _recognize_simple(encoding,datas):
 		# votes (note: in the event of an unlikely tie Python will
 		# select first entry in the dictionary)
 		name = max(counts, key=counts.get)
+		#print(counts)
+		name_count = counts.get(name,0)
+
+
 		precision = counts.get(name,0)/len(matchedIdxs)
-	response = {"category" : name,"precision":precision}
+	names = []
+	for temp_name, counter in counts.items():
+		if counter == name_count:
+			names.append(temp_name)
+	response = {"category" : names,"precision":precision}
 	return response
 
 
@@ -315,7 +323,7 @@ def predict_faces(image,method="hog",encoding_path=default_encodings):
 	encodings = encode_prediction(processed_image,raw_landmarks)
 
 	response = recognize(encodings, boxes,data)
-	print(response)
+	#print(response)
 
 
 	return response
@@ -422,8 +430,8 @@ def authentificate():
 		if liveliness :
 			response = predict_faces(os.path.join(app.config['TEMP_FOLDER'], "temp_frame.jpg"))
 			output['score'] = response[0]["precision"]
-			print(response[0]["category"])
-			if username == response[0]["category"]:
+			#print(response[0]["category"])
+			if username in response[0]["category"]:
 				output['Decision'] = "APPROVED"
 				output['DecisionReason']="AUTHENTIFICATION_SUCCESS"
 			else :
@@ -459,4 +467,4 @@ def reset_server():
 		output['msg'] = "ERROR_DETECTED : " + str(e)
 	return output
 
-app.run()#host= '0.0.0.0')
+app.run(host= '0.0.0.0')
