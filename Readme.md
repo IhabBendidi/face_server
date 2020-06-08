@@ -59,5 +59,5 @@ curl -X POST 'http://127.0.0.1:5000/api/reset'
 ```
 {"code":200,"msg":"DONE"}
 
-{"code":500,"msg":"ERROR_DETECTED : name 'shutil' is not defined"}
+{"code":500,"msg":"ERROR_DETECTED : <Explanation of error>"}
 ```
