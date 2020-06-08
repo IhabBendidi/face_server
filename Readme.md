@@ -2,7 +2,7 @@
 # inscription :
 - For the main inscription, this is an example of the curl request to send in terminal:
 ```
-curl -X POST -F cin_file=@brahim.jpeg 'http://127.0.0.1:5000/api/enroll?username=ihab'
+curl -X POST -F cin_file=@brahim.jpeg 'http://127.0.0.1:5000/api/enroll?username=brahim'
 ```
 the `cin_file` is the path to the image of the cin of the user , and the username is the username with which he'll be saved in the database
 
@@ -46,4 +46,18 @@ On failure, it returns a json in the form of the following, with `DecisionReason
 
 ```
 {"score":None,"Decision":"REJECTED","DecisionReason":"THE_FAILURE_MESSAGE"}
+```
+
+
+
+# Deleting all users in server :
+```
+curl -X POST 'http://127.0.0.1:5000/api/reset'
+```
+
+
+```
+{"code":200,"msg":"DONE"}
+
+{"code":500,"msg":"ERROR_DETECTED : name 'shutil' is not defined"}
 ```

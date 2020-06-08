@@ -13,6 +13,7 @@ from keras.preprocessing.image import img_to_array
 import time
 from keras import backend as K
 import tensorflow as tf
+import shutil
 
 quota_bar = 0.5
 print("[INFO] loading liveness detector...")
@@ -26,7 +27,7 @@ ALLOWED_EXTENSIONS = {'jpg', 'png', 'mov', 'mp4'}
 app = flask.Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "users"
 app.config['TEMP_FOLDER'] = "temp"
-app.config["DEBUG"] = False
+app.config["DEBUG"] = True
 
 
 
@@ -306,20 +307,15 @@ def predict_faces(image,method="hog",encoding_path=default_encodings):
 		#data = encoding_data
 	#else :
 	data = load_encodings(encoding_path)
-	print('here')
 	processed_image = preprocess(image,method)
-	print('here2')
 	boxes = detect_face_boxes_prediction(processed_image,method)
-	print('here3')
 
 	raw_landmarks = detect_landmarks_prediction(processed_image,boxes)
-	print('here4')
 
 	encodings = encode_prediction(processed_image,raw_landmarks)
-	print('here5')
 
 	response = recognize(encodings, boxes,data)
-	print('here6')
+	print(response)
 
 
 	return response
@@ -385,7 +381,7 @@ def enroll():
 		print(str(e))
 		output['trained'] = "failed"
 		output['EnrollStatus'] = "REJECTED"
-		output['DecisionReason']="ERROR_DETECTED"
+		output['DecisionReason']="ERROR_DETECTED : " + str(e)
 	return output,status
 
 
@@ -442,10 +438,25 @@ def authentificate():
 		print(str(e))
 		output['score'] = None
 		output['Decision'] = "REJECTED"
-		output['DecisionReason']="ERROR_DETECTED"
+		output['DecisionReason']="ERROR_DETECTED : " + str(e)
 	os.remove(os.path.join(app.config['TEMP_FOLDER'], filename))
 	os.remove(os.path.join(app.config['TEMP_FOLDER'], "temp_frame.jpg"))
 	return output,status
 
+@app.route('/api/reset', methods=['POST'])
+def reset_server():
+	output = {}
+	try :
+		shutil.rmtree('users')
+		os.mkdir('users')
+		open("users/.placeholder", 'a').close()
+		os.remove("encodings/encodings.pickle")
+		open("encodings/encodings.pickle", 'a').close()
+		output['code'] = 200
+		output['msg'] = "DONE"
+	except Exception as e :
+		output['code'] = 500
+		output['msg'] = "ERROR_DETECTED : " + str(e)
+	return output
 
 app.run()#host= '0.0.0.0')
