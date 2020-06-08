@@ -302,18 +302,24 @@ def train_face_model(folder,encoding_path=default_encodings,method ="hog"):
 
 
 def predict_faces(image,method="hog",encoding_path=default_encodings):
-	if encoding_path == default_encodings :
-		data = encoding_data
-	else :
-		data = load_encodings(encoding_path)
+	#if encoding_path == default_encodings :
+		#data = encoding_data
+	#else :
+	data = load_encodings(encoding_path)
+	print('here')
 	processed_image = preprocess(image,method)
+	print('here2')
 	boxes = detect_face_boxes_prediction(processed_image,method)
+	print('here3')
 
 	raw_landmarks = detect_landmarks_prediction(processed_image,boxes)
+	print('here4')
 
 	encodings = encode_prediction(processed_image,raw_landmarks)
+	print('here5')
 
 	response = recognize(encodings, boxes,data)
+	print('here6')
 
 
 	return response
@@ -371,6 +377,7 @@ def enroll():
 	try :
 		#train_face_model(os.path.join(app.config['UPLOAD_FOLDER'], username))
 		train_face_model(app.config['UPLOAD_FOLDER'])
+		update_encodings()
 		output['trained'] = "success"
 		output['EnrollStatus'] = "APPROVED"
 		output['DecisionReason']="ENROLLED_AS_USER"
@@ -441,4 +448,4 @@ def authentificate():
 	return output,status
 
 
-app.run(host= '0.0.0.0')
+app.run()#host= '0.0.0.0')
