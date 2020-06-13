@@ -87,7 +87,7 @@ def get_video_liveness(video_path,quota_bar):
 	while success :
 		count += 1
 		success,frame = vidcap.read()
-		if count >= 40 and success:
+		if count >= 15 and success:
 			label = recognize_liveness(frame,quota_bar)
 			print(str(label))
 			total_labels.append(label)
