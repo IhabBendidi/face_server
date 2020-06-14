@@ -15,7 +15,7 @@ from keras import backend as K
 import tensorflow as tf
 import shutil
 
-quota_bar = 0.5
+quota_bar = 0.95
 print("[INFO] loading liveness detector...")
 
 #model = load_model("models/liveness.model")
@@ -47,7 +47,7 @@ def recognize_liveness(frame,quota_bar):
 				confidence = detections[0, 0, i, 2]
 
 				# filter out weak detections
-				if confidence > 0.5:
+				if confidence > 0.3:
 					# compute the (x, y)-coordinates of the bounding box for
 					# the face and extract the face ROI
 					box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
@@ -87,7 +87,7 @@ def get_video_liveness(video_path,quota_bar):
 	while success :
 		count += 1
 		success,frame = vidcap.read()
-		if count >= 15 and success:
+		if count >= 10 and success:
 			label = recognize_liveness(frame,quota_bar)
 			print(str(label))
 			total_labels.append(label)
@@ -102,8 +102,10 @@ def get_video_liveness(video_path,quota_bar):
 	quota = len(real_labels) / len(total_labels)
 	print(quota)
 	if quota > quota_bar:
+		print(True)
 		return True,returned_frame
 	else :
+		print(False)
 		return False,returned_frame
 
 
